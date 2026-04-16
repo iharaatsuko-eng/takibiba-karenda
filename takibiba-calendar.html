@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAKiBiBAカフェ営業時間 ＆ KUBERU 開催予定</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f4ef;
+    --bg2: #ede9e0;
+    --border: rgba(0,0,0,0.1);
+    --border2: rgba(0,0,0,0.06);
+    --text: #2c2b28;
+    --text2: #6b6a65;
+    --text3: #a09e98;
+    --fri: #534AB7;
+    --sat: #b45309;
+    --sepia: #3e2e18;
+    --sepia2: #7a5f3a;
+    --radius: 10px;
+  }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 4rem;
+  }
+
+  /* ── ヘッダー ── */
+  .site-header {
+    background: #fdf8f0;
+    border-bottom: 1px solid rgba(122,95,58,0.2);
+    padding: 1.2rem 1.5rem 1rem;
+    text-align: center;
+  }
+
+  .header-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    border: 1px solid rgba(122,95,58,0.25);
+    border-radius: 4px;
+    padding: 0.9rem 2rem 0.8rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  /* 四隅の装飾 */
+  .header-inner::before,
+  .header-inner::after {
+    content: '✦';
+    position: absolute;
+    font-size: 10px;
+    color: var(--sepia2);
+    opacity: 0.5;
+  }
+  .header-inner::before { top: 6px; left: 10px; }
+  .header-inner::after  { bottom: 6px; right: 10px; }
+
+  .logo-wrap {
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+
+  .logo-wrap img {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  /* 細い飾り罫 */
+  .title-rule {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 auto 1rem;
+    max-width: 480px;
+    color: var(--sepia2);
+    opacity: 0.55;
+  }
+  .title-rule::before,
+  .title-rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--sepia2);
+  }
+  .title-rule span { font-size: 11px; letter-spacing: 0.2em; white-space: nowrap; }
+
+  .site-title-main {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(14px, 2.5vw, 20px);
+    font-weight: 600;
+    color: var(--sepia);
+    letter-spacing: 0.08em;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .site-title-main .amp {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.15em;
+    color: var(--sepia2);
+    margin: 0 4px;
+    opacity: 0.9;
+  }
+
+  /* ── コンテンツ ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .month-block { margin-bottom: 3rem; }
+
+  .month-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 12px;
+    padding-left: 2px;
+  }
+
+  /* ── グリッド ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .dow {
+    background: var(--bg2);
+    padding: 7px 4px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text2);
+  }
+  .dow.fri { color: var(--fri); }
+
+  .cell {
+    background: #fff;
+    min-height: 110px;
+    padding: 6px 5px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .cell.empty { background: var(--bg2); min-height: 110px; }
+
+  .day-num {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 3px;
+    line-height: 1;
+  }
+  .day-num.fri { color: var(--fri); }
+  .day-num.sat { color: var(--sat); }
+
+  /* ── イベントカード ── */
+  .ev {
+    border-radius: 4px;
+    padding: 3px 5px;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  .ev-label { font-size: 9px; opacity: 0.7; line-height: 1.3; }
+  .ev-name  { font-weight: 500; font-size: 10px; }
+  .ev-desc  { font-size: 9px; opacity: 0.8; line-height: 1.3; margin-top: 1px; }
+  .ev-time  { font-size: 9px; font-weight: 500; opacity: 0.85; margin-top: 1px; }
+
+  .ev-amber  { background: #FAEEDA; color: #633806; }
+  .ev-teal   { background: #E1F5EE; color: #085041; }
+  .ev-purple { background: #EEEDFE; color: #3C3489; }
+  .ev-coral  { background: #FAECE7; color: #712B13; }
+  .ev-pink   { background: #FBEAF0; color: #72243E; }
+  .ev-kblue  { background: #dde8f8; color: #1a3a6b; }
+  .ev-kgreen { background: #d4f0e0; color: #0a4a28; }
+  .ev-kgold  { background: #f5e6c0; color: #5a3a00; }
+  .ev-kred   { background: #f5d9d0; color: #6b1a0a; }
+  .ev-kforest{ background: #d8ecd0; color: #1a4a10; }
+  .ev-kpink  { background: #f5d8e8; color: #6b0a3a; }
+
+  /* ── 凡例 ── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+  }
+  .legend-section {
+    width: 100%;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text3);
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+  }
+  .legend-section:first-child { margin-top: 0; }
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--text2);
+  }
+  .leg-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ── フッター ── */
+  .site-footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border2);
+  }
+
+  /* ── レスポンシブ ── */
+  @media (max-width: 600px) {
+    .ev-desc { display: none; }
+    .cell { min-height: 90px; }
+    .cell.empty { min-height: 90px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <img src="data:image/jpeg;base64,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" alt="TAKiBiBA ロゴ">
+    </div>
+    <h1 class="site-title-main">
+      TAKiBiBAカフェ営業時間<span class="amp">&</span><br>
+      みんなでつくるみんなの学校KUBERU開催予定
+    </h1>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ── 4月 ── -->
+  <div class="month-block">
+    <div class="month-title">2026年 4月</div>
+    <div class="grid">
+      <div class="dow">日</div><div class="dow">月</div><div class="dow">火</div><div class="dow">水</div><div class="dow">木</div><div class="dow fri">金</div><div class="dow">土</div>
+
+      <div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div>
+      <div class="cell"><div class="day-num">1</div></div>
+      <div class="cell"><div class="day-num">2</div></div>
+      <div class="cell"><div class="day-num fri">3</div></div>
+      <div class="cell empty"></div>
+
+      <div class="cell empty"></div>
+      <div class="cell"><div class="day-num">6</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">7</div>
+        <div class="ev ev-kpink"><div class="ev-label">KUBERU</div><div class="ev-name">歴カフェ</div><div class="ev-time">10:00〜12:00</div></div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">8</div>
+        <div class="ev ev-teal"><div class="ev-name">mio bar odoriba.</div><div class="ev-desc">エスプレッソ・ワイン・焼き菓子</div><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">9</div>
+        <div class="ev ev-pink"><div class="ev-name">二兎屋</div><div class="ev-desc">スコーン・お飲み物</div><div class="ev-time">11:00〜14:00</div></div>
+        <div class="ev ev-pink"><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num fri">10</div>
+        <div class="ev ev-coral"><div class="ev-name">店頭イベント</div><div class="ev-desc">フリーコーヒー・パン試食・0円交換会</div><div class="ev-time">15:00〜18:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num sat">11</div>
+        <div class="ev ev-kgold"><div class="ev-label">KUBERU</div><div class="ev-name">パンのある暮らし</div><div class="ev-time">11:00〜12:00</div></div>
+      </div>
+
+      <div class="cell empty"></div>
+      <div class="cell"><div class="day-num">13</div>
+        <div class="ev ev-kgreen"><div class="ev-label">KUBERU</div><div class="ev-name">活氣学</div><div class="ev-time">10:00〜12:00</div></div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">14</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">15</div>
+        <div class="ev ev-teal"><div class="ev-name">mio bar odoriba.</div><div class="ev-desc">エスプレッソ・ワイン・焼き菓子</div><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">16</div>
+        <div class="ev ev-pink"><div class="ev-name">二兎屋</div><div class="ev-desc">スコーン・お飲み物</div><div class="ev-time">11:00〜14:00</div></div>
+        <div class="ev ev-pink"><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num fri">17</div>
+        <div class="ev ev-coral"><div class="ev-name">店頭イベント</div><div class="ev-desc">フリーコーヒー・パン試食・0円交換会</div><div class="ev-time">15:00〜18:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num sat">18</div>
+        <div class="ev ev-kred"><div class="ev-label">KUBERU</div><div class="ev-name">漢学講座</div><div class="ev-time">15:00〜16:00</div></div>
+      </div>
+
+      <div class="cell"><div class="day-num">19</div>
+        <div class="ev ev-kblue"><div class="ev-label">KUBERU</div><div class="ev-name">テクノロジー</div><div class="ev-desc">オンライン</div><div class="ev-time">9:00〜10:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">20</div>
+        <div class="ev ev-kpink"><div class="ev-label">KUBERU</div><div class="ev-name">歴カフェ</div><div class="ev-desc">歩崎（現地）</div><div class="ev-time">9:30〜10:30</div></div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">21</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">22</div>
+        <div class="ev ev-teal"><div class="ev-name">mio bar odoriba.</div><div class="ev-desc">エスプレッソ・ワイン・焼き菓子</div><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">23</div>
+        <div class="ev ev-pink"><div class="ev-name">二兎屋</div><div class="ev-desc">スコーン・お飲み物</div><div class="ev-time">11:00〜14:00</div></div>
+        <div class="ev ev-pink"><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num fri">24</div>
+        <div class="ev ev-purple"><div class="ev-name">パン教室</div><div class="ev-desc">My粉シナモンロール</div><div class="ev-time">10:00〜12:00</div></div>
+        <div class="ev ev-coral"><div class="ev-name">店頭イベント</div><div class="ev-desc">フリーコーヒー・パン試食・0円交換会</div><div class="ev-time">15:00〜18:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num sat">25</div>
+        <div class="ev ev-kforest"><div class="ev-label">KUBERU</div><div class="ev-name">経営×人生</div><div class="ev-time">15:30〜17:00</div></div>
+      </div>
+
+      <div class="cell"><div class="day-num">26</div>
+        <div class="ev ev-kblue"><div class="ev-label">KUBERU</div><div class="ev-name">テクノロジー</div><div class="ev-desc">オンライン</div><div class="ev-time">9:00〜10:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">27</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">28</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">29</div>
+        <div class="ev ev-teal"><div class="ev-name">mio bar odoriba.</div><div class="ev-desc">エスプレッソ・ワイン・焼き菓子</div><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">30</div>
+        <div class="ev ev-pink"><div class="ev-name">二兎屋</div><div class="ev-desc">スコーン・お飲み物</div><div class="ev-time">11:00〜14:00</div></div>
+        <div class="ev ev-pink"><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell empty"></div><div class="cell empty"></div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-section">カフェ</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#FAEEDA;"></div>ちかりんぱん</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#E1F5EE;"></div>mio bar odoriba.</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#FBEAF0;"></div>二兎屋</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#FAECE7;"></div>店頭イベント</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#EEEDFE;"></div>パン教室</div>
+      <div class="legend-section">KUBERU</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f5d8e8;"></div>歴カフェ</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f5e6c0;"></div>パンのある暮らし</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#d4f0e0;"></div>活氣学</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f5d9d0;"></div>漢学講座</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#dde8f8;"></div>テクノロジー</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#d8ecd0;"></div>経営×人生</div>
+    </div>
+  </div>
+
+  <!-- ── 5月 ── -->
+  <div class="month-block">
+    <div class="month-title">2026年 5月</div>
+    <div class="grid">
+      <div class="dow">日</div><div class="dow">月</div><div class="dow">火</div><div class="dow">水</div><div class="dow">木</div><div class="dow fri">金</div><div class="dow">土</div>
+
+      <div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div>
+      <div class="cell"><div class="day-num fri">1</div>
+        <div class="ev ev-teal"><div class="ev-name">灯りがめぐるマルシェ</div><div class="ev-desc">出店料1,000円・4テーブル</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell empty"></div>
+
+      <div class="cell empty"></div>
+      <div class="cell"><div class="day-num">4</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">5</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">6</div>
+        <div class="ev ev-teal"><div class="ev-name">mio bar odoriba.</div><div class="ev-desc">エスプレッソ・ワイン・焼き菓子</div><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">7</div>
+        <div class="ev ev-pink"><div class="ev-name">二兎屋</div><div class="ev-desc">スコーン・お飲み物</div><div class="ev-time">11:00〜14:00</div></div>
+        <div class="ev ev-pink"><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num fri">8</div></div>
+      <div class="cell"><div class="day-num sat">9</div>
+        <div class="ev ev-kgold"><div class="ev-label">KUBERU</div><div class="ev-name">パンのある暮らし</div><div class="ev-time">11:00〜12:00</div></div>
+      </div>
+
+      <div class="cell"><div class="day-num">10</div>
+        <div class="ev ev-kblue"><div class="ev-label">KUBERU</div><div class="ev-name">テクノロジー</div><div class="ev-desc">オンライン</div><div class="ev-time">9:00〜10:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">11</div>
+        <div class="ev ev-kgreen"><div class="ev-label">KUBERU</div><div class="ev-name">活氣学</div><div class="ev-time">10:00〜12:00</div></div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">12</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">13</div>
+        <div class="ev ev-teal"><div class="ev-name">mio bar odoriba.</div><div class="ev-desc">エスプレッソ・ワイン・焼き菓子</div><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">14</div>
+        <div class="ev ev-pink"><div class="ev-name">二兎屋</div><div class="ev-desc">スコーン・お飲み物</div><div class="ev-time">11:00〜14:00</div></div>
+        <div class="ev ev-pink"><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num fri">15</div></div>
+      <div class="cell"><div class="day-num sat">16</div>
+        <div class="ev ev-kred"><div class="ev-label">KUBERU</div><div class="ev-name">漢学講座</div><div class="ev-time">15:00〜16:00</div></div>
+      </div>
+
+      <div class="cell"><div class="day-num">17</div>
+        <div class="ev ev-kblue"><div class="ev-label">KUBERU</div><div class="ev-name">テクノロジー</div><div class="ev-desc">オンライン</div><div class="ev-time">9:00〜10:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">18</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">19</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">20</div>
+        <div class="ev ev-teal"><div class="ev-name">mio bar odoriba.</div><div class="ev-desc">エスプレッソ・ワイン・焼き菓子</div><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">21</div>
+        <div class="ev ev-pink"><div class="ev-name">二兎屋</div><div class="ev-desc">スコーン・お飲み物</div><div class="ev-time">11:00〜14:00</div></div>
+        <div class="ev ev-pink"><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num fri">22</div></div>
+      <div class="cell"><div class="day-num sat">23</div>
+        <div class="ev ev-kforest"><div class="ev-label">KUBERU</div><div class="ev-name">経営×人生</div><div class="ev-time">15:30〜17:00</div></div>
+      </div>
+
+      <div class="cell"><div class="day-num">24</div>
+        <div class="ev ev-kblue"><div class="ev-label">KUBERU</div><div class="ev-name">テクノロジー</div><div class="ev-desc">オンライン</div><div class="ev-time">9:00〜10:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">25</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">26</div>
+        <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">27</div>
+        <div class="ev ev-teal"><div class="ev-name">mio bar odoriba.</div><div class="ev-desc">エスプレッソ・ワイン・焼き菓子</div><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num">28</div>
+        <div class="ev ev-pink"><div class="ev-name">二兎屋</div><div class="ev-desc">スコーン・お飲み物</div><div class="ev-time">11:00〜14:00</div></div>
+        <div class="ev ev-pink"><div class="ev-time">16:00〜20:00</div></div>
+      </div>
+      <div class="cell"><div class="day-num fri">29</div></div>
+      <div class="cell"><div class="day-num sat">30</div></div>
+
+      <div class="cell"><div class="day-num">31</div>
+        <div class="ev ev-kblue"><div class="ev-label">KUBERU</div><div class="ev-name">テクノロジー</div><div class="ev-desc">オンライン</div><div class="ev-time">9:00〜10:00</div></div>
+      </div>
+      <div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-section">カフェ</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#FAEEDA;"></div>ちかりんぱん</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#E1F5EE;"></div>mio bar odoriba.</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#FBEAF0;"></div>二兎屋</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#FAECE7;"></div>店頭イベント</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#EEEDFE;"></div>パン教室</div>
+      <div class="legend-section">KUBERU</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f5d8e8;"></div>歴カフェ</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f5e6c0;"></div>パンのある暮らし</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#d4f0e0;"></div>活氣学</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f5d9d0;"></div>漢学講座</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#dde8f8;"></div>テクノロジー</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#d8ecd0;"></div>経営×人生</div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <p>TAKiBiBA &nbsp;|&nbsp; KUBERU（みんなでつくるみんなの学校）</p>
+</footer>
+
+</body>
+</html>
