@@ -9,8 +9,8 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #f7f4ef;
-    --bg2: #ede9e0;
+    --bg: #faf9f6;
+    --bg2: #faf9f6;
     --border: rgba(0,0,0,0.1);
     --border2: rgba(0,0,0,0.06);
     --text: #2c2b28;
@@ -33,36 +33,21 @@
 
   /* ── ヘッダー ── */
   .site-header {
-    background: #fdf8f0;
-    border-bottom: 1px solid rgba(122,95,58,0.2);
-    padding: 1.2rem 1.5rem 1rem;
+    background: #faf9f6;
+    border-bottom: 1px solid rgba(122,95,58,0.1);
+    padding: 0.6rem 1.5rem 0.5rem;
     text-align: center;
   }
 
   .header-inner {
     max-width: 700px;
     margin: 0 auto;
-    border: 1px solid rgba(122,95,58,0.25);
-    border-radius: 4px;
     padding: 0.9rem 2rem 0.8rem;
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 16px;
   }
-
-  /* 四隅の装飾 */
-  .header-inner::before,
-  .header-inner::after {
-    content: '✦';
-    position: absolute;
-    font-size: 10px;
-    color: var(--sepia2);
-    opacity: 0.5;
-  }
-  .header-inner::before { top: 6px; left: 10px; }
-  .header-inner::after  { bottom: 6px; right: 10px; }
 
   .logo-wrap {
     display: flex;
@@ -99,7 +84,7 @@
 
   .site-title-main {
     font-family: 'Shippori Mincho', serif;
-    font-size: clamp(14px, 2.5vw, 20px);
+    font-size: clamp(17px, 3vw, 26px);
     font-weight: 600;
     color: var(--sepia);
     letter-spacing: 0.08em;
@@ -121,7 +106,7 @@
   .container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 1rem 1rem;
   }
 
   .month-block { margin-bottom: 3rem; }
@@ -255,7 +240,7 @@
 <header class="site-header">
   <div class="header-inner">
     <div class="logo-wrap">
-      <img src="data:image/jpeg;base64,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" alt="TAKiBiBA ロゴ">
+      <img src="takibiba-logo.jpg" alt="TAKiBiBA ロゴ">
     </div>
     <h1 class="site-title-main">
       TAKiBiBAカフェ営業時間<span class="amp">&</span><br>
@@ -278,7 +263,7 @@
       <div class="cell"><div class="day-num fri">3</div></div>
       <div class="cell empty"></div>
 
-      <div class="cell empty"></div>
+      <div class="cell"><div class="day-num">5</div></div>
       <div class="cell"><div class="day-num">6</div>
         <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
       </div>
@@ -300,7 +285,7 @@
         <div class="ev ev-kgold"><div class="ev-label">KUBERU</div><div class="ev-name">パンのある暮らし</div><div class="ev-time">11:00〜12:00</div></div>
       </div>
 
-      <div class="cell empty"></div>
+      <div class="cell"><div class="day-num">12</div></div>
       <div class="cell"><div class="day-num">13</div>
         <div class="ev ev-kgreen"><div class="ev-label">KUBERU</div><div class="ev-name">活氣学</div><div class="ev-time">10:00〜12:00</div></div>
         <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
@@ -393,9 +378,9 @@
       <div class="cell"><div class="day-num fri">1</div>
         <div class="ev ev-teal"><div class="ev-name">灯りがめぐるマルシェ</div><div class="ev-desc">出店料1,000円・4テーブル</div><div class="ev-time">11:00〜17:00</div></div>
       </div>
-      <div class="cell empty"></div>
+      <div class="cell"><div class="day-num sat">2</div></div>
 
-      <div class="cell empty"></div>
+      <div class="cell"><div class="day-num">3</div></div>
       <div class="cell"><div class="day-num">4</div>
         <div class="ev ev-amber"><div class="ev-name">ちかりんぱん</div><div class="ev-desc">店内焼きパン・ハンドドリップコーヒー</div><div class="ev-time">11:00〜17:00</div></div>
       </div>
